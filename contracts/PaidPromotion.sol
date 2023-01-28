@@ -1,25 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.7;
 
 import "./data/APIConsumer.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 
-contract PaidPromotion {
-    APIConsumer public apiConsumer;
-    string public apiUrl;
-    LinkTokenInterface public linkToken;
-
+contract PaidPromotion is APIConsumer {
     constructor(
-        string memory _apiUrl,
-        address _apiConsumerAddress,
-        address _linkToken
-    ) {
-        apiConsumer = APIConsumer(_apiConsumerAddress);
-        apiUrl = _apiUrl;
-        linkToken = LinkTokenInterface(_linkToken);
-    }
-
-    function getViwesCount() external {
-        apiConsumer.requestViewsCountData(apiUrl);
-    }
+        address _chainlinkToken,
+        address _chainlinkOracle,
+        bytes memory _jobId,
+        string memory _apiUrl
+    ) APIConsumer(_chainlinkToken, _chainlinkOracle, _jobId, _apiUrl) {}
 }
