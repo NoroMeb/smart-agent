@@ -54,14 +54,12 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         viewsCount = _viewsCount;
     }
 
-    /**
-     * Allow withdraw of Link tokens from the contract
-     */
-    function withdrawLink() public onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
-        require(
-            link.transfer(msg.sender, link.balanceOf(address(this))),
-            "Unable to transfer"
-        );
+    function onTokenTransfer(
+        address sender,
+        uint256 fee,
+        bytes memory data
+    ) public {
+        (bool success, ) = address(this).call(data);
+        require(success, "NOT SUCCESS");
     }
 }
