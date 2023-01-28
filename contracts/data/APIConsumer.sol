@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
@@ -10,18 +10,21 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     uint256 public viewsCount;
     bytes private jobId;
     uint256 private fee;
+    string apiUrl;
 
     event RequestViewsCount(bytes32 indexed requestId, uint256 viewsCount);
 
     constructor(
         address _chainlinkToken,
         address _chainlinkOracle,
-        bytes memory _jobId
+        bytes memory _jobId,
+        string memory _apiUrl
     ) ConfirmedOwner(msg.sender) {
         setChainlinkToken(_chainlinkToken);
         setChainlinkOracle(_chainlinkOracle);
         jobId = _jobId;
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job) .
+        apiUrl = _apiUrl;
     }
 
     function requestViewsCountData(string memory _apiUrl)
@@ -37,7 +40,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         // Set the URL to perform the GET request on
         req.add("get", _apiUrl);
 
-        req.add("path", "items,0,statistics,viewCount"); // Chainlink nodes 1.0.0 and later support this format
+        req.add("path", "items,0,statistics,viewCount");
 
         // Sends the request
         return sendChainlinkRequest(req, fee);
