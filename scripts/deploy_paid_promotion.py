@@ -19,10 +19,10 @@ def deploy():
     job_id = config["networks"][network.show_active()]["job_id"]
 
     paid_promotion = PaidPromotion.deploy(
+        api_url,
         link_token,
         chainlink_oracle,
         job_id,
-        api_url,
         {"from": account, "priority_fee": "10 gwei"},
     )
 

@@ -6,9 +6,9 @@ import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 
 contract PaidPromotion is APIConsumer {
     constructor(
+        string memory _apiUrl,
         address _chainlinkToken,
         address _chainlinkOracle,
-        bytes memory _jobId,
-        string memory _apiUrl
+        bytes memory _jobId
     ) APIConsumer(_chainlinkToken, _chainlinkOracle, _jobId, _apiUrl) {}
 }
