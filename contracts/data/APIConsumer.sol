@@ -58,11 +58,12 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     }
 
     function onTokenTransfer(
-        address sender,
-        uint256 fee,
-        bytes memory data
+        address _sender,
+        uint256 _fee,
+        bytes memory _data
     ) public {
-        (bool success, ) = address(this).call(data);
+        require(_fee >= fee, "NOT ENOUGH FUNDS");
+        (bool success, ) = address(this).call(_data);
         require(success, "NOT SUCCESS");
     }
 }
