@@ -23,4 +23,15 @@ contract PaidPromotion is APIConsumer {
         client = _client;
         endTimestamp = _endTimestamp;
     }
+
+    modifier onlyPromoter() {
+        require(msg.sender == promoter, "Only promoter can call this function");
+        _;
+    }
+
+    modifier onlyClient() {
+        require(msg.sender == client, "Only client can call this function");
+        _;
+    }
+
 }
