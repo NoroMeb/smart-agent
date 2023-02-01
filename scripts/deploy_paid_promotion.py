@@ -8,8 +8,8 @@ account = get_account()
 
 def main():
     # deploy()
-    # request()
-    view()
+    request_views_count()
+    # view()
 
 
 def deploy():
@@ -17,12 +17,19 @@ def deploy():
     chainlink_oracle = config["networks"][network.show_active()]["chainlink_oracle"]
     api_url = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=G7KNmW9a75Y&key=AIzaSyBJN4rbtGCZiMgSegJ2W8YnPC_gb0ynj3Q"
     job_id = config["networks"][network.show_active()]["job_id"]
+    promoter = "0x108A176896bAD4E05b5C4BE738839fDC4238c526"
+    client = "0x8FB5F1947F1325072307c87e987162f4Cdf823aC"
+    end_timestamp = 1680335012
+    level = 10000
+    amount = Web3.toWei(0.8, "ether")
 
     paid_promotion = PaidPromotion.deploy(
         api_url,
-        link_token,
-        chainlink_oracle,
-        job_id,
+        promoter,
+        client,
+        end_timestamp,
+        level,
+        amount,
         {"from": account, "priority_fee": "10 gwei"},
     )
 
