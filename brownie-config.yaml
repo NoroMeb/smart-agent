@@ -13,6 +13,7 @@ networks:
     link_token: "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"
     chainlink_oracle: "0x99c3F6340B42B3E378f6f899ACD4f764c0cb54CC"
     job_id: "ec013753fda740f8bc74a966daea0723"
+    api_key: ${API_KEY}
 
 wallets:
   from_key: ${PRIVATE_KEY}
