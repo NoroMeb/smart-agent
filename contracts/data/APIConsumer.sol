@@ -14,17 +14,11 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
 
     event RequestViewsCount(bytes32 indexed requestId, uint256 viewsCount);
 
-    constructor(
-        address _chainlinkToken,
-        address _chainlinkOracle,
-        bytes memory _jobId,
-        string memory _apiUrl
-    ) ConfirmedOwner(msg.sender) {
-        setChainlinkToken(_chainlinkToken);
-        setChainlinkOracle(_chainlinkOracle);
-        jobId = _jobId;
+    constructor() ConfirmedOwner(msg.sender) {
+        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
+        setChainlinkOracle(0x99c3F6340B42B3E378f6f899ACD4f764c0cb54CC);
+        jobId = "ec013753fda740f8bc74a966daea0723";
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job) .
-        apiUrl = _apiUrl;
     }
 
     function requestViewsCountData(string memory _apiUrl)
