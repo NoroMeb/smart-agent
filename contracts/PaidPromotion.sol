@@ -34,4 +34,19 @@ contract PaidPromotion is APIConsumer {
         _;
     }
 
+    function onTokenTransfer(
+        address _sender,
+        uint256 _fee,
+        bytes calldata _data
+    ) public {
+        require(_fee >= fee, "NOT ENOUGH FUNDS");
+
+        bytes memory data = _data[4:];
+
+        string memory apiUrl = abi.decode(data, (string));
+
+        requestViewsCountData(apiUrl);
+        // (bool success, ) = address(this).call(_data);
+        // require(success, "NOT SUCCESS");
+    }
 }

@@ -9,8 +9,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
 
     uint256 public viewsCount;
     bytes private jobId;
-    uint256 private fee;
-    string apiUrl;
+    uint256 internal fee;
 
     event RequestViewsCount(bytes32 indexed requestId, uint256 viewsCount);
 
@@ -49,15 +48,5 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     {
         emit RequestViewsCount(_requestId, _viewsCount);
         viewsCount = _viewsCount;
-    }
-
-    function onTokenTransfer(
-        address _sender,
-        uint256 _fee,
-        bytes memory _data
-    ) public {
-        require(_fee >= fee, "NOT ENOUGH FUNDS");
-        (bool success, ) = address(this).call(_data);
-        require(success, "NOT SUCCESS");
     }
 }
