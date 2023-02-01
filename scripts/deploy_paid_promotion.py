@@ -27,7 +27,7 @@ def deploy():
     )
 
 
-def request():
+def request_views_count():
     paid_promotion = PaidPromotion[-1]
     link = Contract.from_explorer("0x326C977E6efc84E512bB9C30f76E30c160eD06FB")
     api_url = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=G7KNmW9a75Y&key=AIzaSyBJN4rbtGCZiMgSegJ2W8YnPC_gb0ynj3Q"
