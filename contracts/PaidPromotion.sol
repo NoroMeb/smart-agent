@@ -109,5 +109,11 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         withdrawEther(_id);
     }
 
-    function endCollab(uint256 _id) external {}
+    function endCollab(uint256 _id) external onlyClient(_id) {
+        Collab memory collab = collabById[_id];
+        require(block.timestamp >= collab.endTimestamp, "ITS NOT THE TIME YET");
+        payable(msg.sender).transfer(collab.clientBalance);
+        collab.clientBalance = 0;
+        collabById[_id] = collab;
+    }
 }
