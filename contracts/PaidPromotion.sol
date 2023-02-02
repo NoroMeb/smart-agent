@@ -44,10 +44,11 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
     //     _;
     // }
 
-    // modifier onlyClient() {
-    //     require(msg.sender == client, "Only client can call this function");
-    //     _;
-    // }
+    modifier onlyClient(uint256 _id) {
+        address client = collabById[_id].client;
+        require(msg.sender == client, "Only client can call this function");
+        _;
+    }
 
     function startACollab(
         address _promoter,
