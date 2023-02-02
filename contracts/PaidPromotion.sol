@@ -105,8 +105,8 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
     ) public {
         require(_fee >= fee, "NOT ENOUGH FUNDS");
         bytes memory data = _data[4:];
-        uint256 apiUrl = abi.decode(data, (uint256));
-        requestViewsCountData(apiUrl);
+        uint256 _id = abi.decode(data, (uint256));
+        withdrawEther(_id);
     }
 
     function endCollab(uint256 _id) external {}
