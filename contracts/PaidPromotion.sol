@@ -72,10 +72,7 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         id = id + 1;
     }
 
-    function requestViewsCountData(uint256 _id)
-        public
-        returns (bytes32 requestId)
-    {
+    function withdrawEther(uint256 _id) public returns (bytes32 requestId) {
         string memory apiUrl = collabById[_id].apiUrl;
 
         Chainlink.Request memory req = buildChainlinkRequest(
