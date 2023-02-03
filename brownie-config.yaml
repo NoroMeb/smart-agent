@@ -1,9 +1,11 @@
 dependecies:
   - smartcontractkit/chainlink@1.10.0
+  - OpenZeppelin/openzeppelin-contracts@4.8.0
 compiler:
   solc:
     remappings:
       - "@chainlink=smartcontractkit/chainlink@1.10.0"
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.8.0"
 dotenv: .env
 
 networks:
