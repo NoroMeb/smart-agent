@@ -86,6 +86,9 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
 
         req.add("path", "items,0,statistics,viewCount");
 
+        req.addInt("times", 1);
+
+
         // Sends the request
         return sendChainlinkRequest(req, fee);
     }

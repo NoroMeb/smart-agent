@@ -11,8 +11,8 @@ networks:
   goerli:
     verify: true
     link_token: "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"
-    chainlink_oracle: "0x99c3F6340B42B3E378f6f899ACD4f764c0cb54CC"
-    job_id: "ec013753fda740f8bc74a966daea0723"
+    chainlink_oracle: "0xCC79157eb46F5624204f47AB42b3906cAA40eaB7"
+    job_id: "ca98366cc7314957b8c012c72f05aeeb"
     api_key: ${API_KEY}
 
 wallets:
