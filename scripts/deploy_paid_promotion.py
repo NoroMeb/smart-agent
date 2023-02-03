@@ -9,10 +9,10 @@ account_2 = accounts.add(config["wallets"]["from_key_2"])
 
 
 def main():
-    # deploy()
-    # start_a_collab("bY2yvESoWAs")
-    # withdraw_ether(0)
-    view()
+    deploy()
+    start_a_collab("bY2yvESoWAs")
+    withdraw_ether(0)
+    # view()
     # end_collab(0)
     # view()
 
@@ -35,16 +35,15 @@ def start_a_collab(video_id):
     promoter = "0x108A176896bAD4E05b5C4BE738839fDC4238c526"
     client = "0x8FB5F1947F1325072307c87e987162f4Cdf823aC"
     api_url = f"https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id={video_id}&key={api_key}"
-    end_time_stamp = 1675329000
+    end_time_stamp = 1675433147
     level = 10000
     amount = Web3.toWei(0.01, "ether")
 
     start_collab_tx = paid_promotion.startACollab(
-        client,
         promoter,
+        client,
         api_url,
         end_time_stamp,
-        level,
         amount,
         {"from": account, "priority_fee": "10 gwei", "value": amount},
     )

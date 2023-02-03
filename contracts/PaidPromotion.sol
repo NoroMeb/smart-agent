@@ -7,7 +7,6 @@ import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
-    uint256 public viewsCount;
     bytes private jobId;
     uint256 internal fee;
 
@@ -18,10 +17,9 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         address client;
         string apiUrl;
         uint256 endTimestamp;
-        uint256 level;
         uint256 amount;
-        uint256 promoterBalance;
         uint256 clientBalance;
+        uint256 lastViewsCount;
     }
 
     mapping(uint256 => Collab) public collabById;
@@ -55,7 +53,6 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         address _client,
         string memory _apiUrl,
         uint256 _endTimestamp,
-        uint256 _level,
         uint256 _amount
     ) external payable {
         Collab memory collab = Collab(
@@ -63,10 +60,9 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
             _client,
             _apiUrl,
             _endTimestamp,
-            _level,
             _amount,
-            0,
-            msg.value
+            msg.value,
+            0
         );
         collabById[id] = collab;
         id = id + 1;
@@ -81,13 +77,14 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
             this.fulfill.selector
         );
 
+        id = _id;
+
         // Set the URL to perform the GET request on
         req.add("get", apiUrl);
 
         req.add("path", "items,0,statistics,viewCount");
 
         req.addInt("times", 1);
-
 
         // Sends the request
         return sendChainlinkRequest(req, fee);
@@ -98,7 +95,14 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         recordChainlinkFulfillment(_requestId)
     {
         emit RequestViewsCount(_requestId, _viewsCount);
-        viewsCount = _viewsCount;
+
+        Collab memory collab = collabById[id];
+        uint256 promoterOwings = (_viewsCount - collab.lastViewsCount) *
+            100000000000000;
+        collab.lastViewsCount = _viewsCount;
+        require(promoterOwings >= collab.clientBalance, "Not enough funds");
+        payable(collab.promoter).transfer(promoterOwings);
+        collab.clientBalance = collab.clientBalance - promoterOwings;
     }
 
     function onTokenTransfer(
