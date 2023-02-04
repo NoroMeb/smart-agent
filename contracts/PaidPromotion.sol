@@ -37,11 +37,6 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         id = 0;
     }
 
-    // modifier onlyPromoter() {
-    //     require(msg.sender == promoter, "Only promoter can call this function");
-    //     _;
-    // }
-
     modifier onlyClient(uint256 _id) {
         address client = collabById[_id].client;
         require(msg.sender == client, "Only client can call this function");
@@ -113,6 +108,11 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         require(_fee >= fee, "NOT ENOUGH FUNDS");
         bytes memory data = _data[4:];
         uint256 _id = abi.decode(data, (uint256));
+        Collab memory collab = collabById[_id];
+        require(
+            _sender == collab.promoter,
+            "Only promoter can call this function"
+        );
         withdrawEther(_id);
     }
 
