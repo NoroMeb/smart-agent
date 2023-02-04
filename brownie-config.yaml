@@ -17,6 +17,8 @@ networks:
     job_id: "ca98366cc7314957b8c012c72f05aeeb"
     api_key: ${API_KEY}
 
+  development:
+    api_key: ${API_KEY}
 wallets:
   from_key: ${PRIVATE_KEY}
   from_key_2: ${PRIVATE_KEY_2}
