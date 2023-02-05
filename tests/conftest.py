@@ -11,6 +11,12 @@ def skip_live_testing():
 
 
 @pytest.fixture()
+def skip_local_testing():
+    if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for live testing !")
+
+
+@pytest.fixture()
 def account():
     account = get_account(index=0)
 
@@ -52,7 +58,7 @@ def start_collab(account, second_account, api_url, paid_promotion):
     promoter = account
     client = second_account
     end_timestamp = 1675433147
-    amount = Web3.toWei(0.001, "ether")
+    amount = Web3.toWei(0.01, "ether")
     client_balance = Web3.toWei(1, "ether")
     paid_promotion.startACollab(
         promoter,
