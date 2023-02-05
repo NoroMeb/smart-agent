@@ -24,6 +24,7 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
 
     mapping(uint256 => Collab) public collabById;
     uint256 id;
+    uint256 fulfillID;
 
     constructor(
         address _chainlinkToken,
@@ -63,7 +64,7 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         id = id + 1;
     }
 
-    function withdrawEther(uint256 _id) public returns (bytes32 requestId) {
+    function withdrawEther(uint256 _id) private returns (bytes32 requestId) {
         string memory apiUrl = collabById[_id].apiUrl;
 
         Chainlink.Request memory req = buildChainlinkRequest(
@@ -72,7 +73,7 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
             this.fulfill.selector
         );
 
-        id = _id;
+        fulfillID = _id;
 
         // Set the URL to perform the GET request on
         req.add("get", apiUrl);
@@ -90,14 +91,15 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         recordChainlinkFulfillment(_requestId)
     {
         emit RequestViewsCount(_requestId, _viewsCount);
+        Collab memory collab = collabById[fulfillID];
 
-        Collab memory collab = collabById[id];
         uint256 promoterOwings = (_viewsCount - collab.lastViewsCount) *
-            100000000000000;
-        collab.lastViewsCount = _viewsCount;
-        require(promoterOwings >= collab.clientBalance, "Not enough funds");
+            collab.amount;
+        require(promoterOwings <= collab.clientBalance, "Not enough funds");
         payable(collab.promoter).transfer(promoterOwings);
         collab.clientBalance = collab.clientBalance - promoterOwings;
+        collab.lastViewsCount = _viewsCount;
+        collabById[fulfillID] = collab;
     }
 
     function onTokenTransfer(
