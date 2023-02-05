@@ -24,6 +24,7 @@ contract MockPaidPromotion is ChainlinkClient, ConfirmedOwner {
 
     mapping(uint256 => Collab) public collabById;
     uint256 public id;
+    uint256 public fulfillID;
 
     constructor(
         address _chainlinkToken,
@@ -36,11 +37,6 @@ contract MockPaidPromotion is ChainlinkClient, ConfirmedOwner {
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job) .
         id = 0;
     }
-
-    // modifier onlyPromoter() {
-    //     require(msg.sender == promoter, "Only promoter can call this function");
-    //     _;
-    // }
 
     modifier onlyClient(uint256 _id) {
         address client = collabById[_id].client;
@@ -77,7 +73,7 @@ contract MockPaidPromotion is ChainlinkClient, ConfirmedOwner {
             this.fulfill.selector
         );
 
-        id = _id;
+        fulfillID = _id;
 
         // Set the URL to perform the GET request on
         req.add("get", apiUrl);
@@ -90,23 +86,20 @@ contract MockPaidPromotion is ChainlinkClient, ConfirmedOwner {
         return sendChainlinkRequest(req, fee);
     }
 
-    function TestwithdrawEther(uint256 _id) public returns (uint256) {
-        return 4;
-    }
-
     function fulfill(bytes32 _requestId, uint256 _viewsCount)
         public
         recordChainlinkFulfillment(_requestId)
     {
         emit RequestViewsCount(_requestId, _viewsCount);
+        Collab memory collab = collabById[fulfillID];
 
-        Collab memory collab = collabById[id];
         uint256 promoterOwings = (_viewsCount - collab.lastViewsCount) *
-            100000000000000;
-        collab.lastViewsCount = _viewsCount;
-        require(promoterOwings >= collab.clientBalance, "Not enough funds");
+            collab.amount;
+        require(promoterOwings <= collab.clientBalance, "Not enough funds");
         payable(collab.promoter).transfer(promoterOwings);
         collab.clientBalance = collab.clientBalance - promoterOwings;
+        collab.lastViewsCount = _viewsCount;
+        collabById[fulfillID] = collab;
     }
 
     function onTokenTransfer(
@@ -122,7 +115,7 @@ contract MockPaidPromotion is ChainlinkClient, ConfirmedOwner {
             _sender == collab.promoter,
             "Only promoter can call this function"
         );
-        TestwithdrawEther(_id);
+        withdrawEther(_id);
     }
 
     function endCollab(uint256 _id) external onlyClient(_id) {
