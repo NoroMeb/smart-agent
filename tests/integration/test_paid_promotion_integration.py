@@ -41,7 +41,7 @@ def test_paid_promotion_integration(skip_local_testing):
         paid_promotion,
         Web3.toWei(0.1, "ether"),
         paid_promotion.withdrawEther.encode_input(0),
-        {"from": promoter},
+        {"from": promoter, "priority_fee": priority_fee},
     )
 
     event_filter = paid_promotion.events.RequestViewsCount.createFilter(
