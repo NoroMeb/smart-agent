@@ -10,11 +10,6 @@ account_2 = accounts.add(config["wallets"]["from_key_2"])
 
 def main():
     deploy()
-    start_a_collab("bY2yvESoWAs")
-    withdraw_ether(0)
-    # view()
-    # end_collab(0)
-    # view()
 
 
 def deploy():
