@@ -9,7 +9,7 @@ account_2 = accounts.add(config["wallets"]["from_key_2"])
 
 
 def main():
-    deploy()
+    view()
 
 
 def deploy():
@@ -61,7 +61,7 @@ def end_collab(id):
 
 
 def view():
-    paid_promotion = PaidPromotion[-1]
+    paid_promotion = Contract.from_abi("PaidPromotion", "0x30401029AfD9f2835260886c2E1aF2359ff77d4C",PaidPromotion.abi)
     print("========================")
-    print(paid_promotion.viewsCount())
+    print(paid_promotion.collabById(2))
     print("========================")
