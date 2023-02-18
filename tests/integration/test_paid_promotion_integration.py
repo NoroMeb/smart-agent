@@ -16,7 +16,7 @@ def test_paid_promotion_integration(skip_local_testing):
     promoter = account
     promoter_initial_balance = promoter.balance()
     client = second_account
-    client_balance = Web3.toWei(1, "ether")
+    client_balance = Web3.toWei(0.1, "ether")
     video_id = "l4uCnAWj-6I"
     api_key = config["networks"][network.show_active()]["api_key"]
     api_url = f"https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id={video_id}&key={api_key}"
