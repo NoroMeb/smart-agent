@@ -9,7 +9,7 @@ account_2 = accounts.add(config["wallets"]["from_key_2"])
 
 
 def main():
-    view()
+    deploy()
 
 
 def deploy():
@@ -22,6 +22,7 @@ def deploy():
         chainlink_oracle,
         job_id,
         {"from": account, "priority_fee": "10 gwei"},
+        publish_source=True,
     )
 
 
