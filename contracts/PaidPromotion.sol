@@ -125,4 +125,8 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
         collab.clientBalance = 0;
         collabById[_id] = collab;
     }
+
+    function getCollab(uint256 _id) external view returns(Collab memory) {
+        return collabById[_id];
+    }
 }
