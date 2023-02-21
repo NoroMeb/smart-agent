@@ -23,7 +23,7 @@ contract PaidPromotion is ChainlinkClient, ConfirmedOwner {
     }
 
     mapping(uint256 => Collab) public collabById;
-    uint256 id;
+    uint256 public id;
     uint256 fulfillID;
 
     constructor(
