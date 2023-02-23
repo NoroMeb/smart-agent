@@ -62,7 +62,7 @@ def end_collab(id):
 
 
 def view():
-    paid_promotion = Contract.from_abi("PaidPromotion", "0x30401029AfD9f2835260886c2E1aF2359ff77d4C",PaidPromotion.abi)
+    paid_promotion = PaidPromotion[-1]
     print("========================")
     print(paid_promotion.collabById(2))
     print("========================")
